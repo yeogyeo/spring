@@ -23,6 +23,10 @@ public class MemberController {
 	@RequestMapping("doMInsert")
 	public String doMInsert(MemberDto memberDto, Model model) {
 		
+		//데이터 받는 방법
+		//1. HttpServletRequest, 2. @RequestParam, 3. 변수 4. 객체
+		
+		
 		
 		//String id = memberDto.getId();
 		//String pw = memberDto.getPw();
@@ -38,7 +42,7 @@ public class MemberController {
 		//model.addAttribute("gender",gender);
 		//model.addAttribute("hobby",hobby);
 		model.addAttribute("mdto",memberDto);
-		
+		System.out.println("controller hobby : "+memberDto.getHobby());
 		return "member/memberView";
 		
 	}
@@ -47,6 +51,15 @@ public class MemberController {
 	@RequestMapping("login")
 	public String login() {
 		return "member/login";
+		
+	}
+	
+	@RequestMapping("mView")
+	public String mView(MemberDto mdto, Model model) {
+		
+		model.addAttribute("mdto", mdto);
+		
+		return "member/memberView";
 		
 	}
 	
