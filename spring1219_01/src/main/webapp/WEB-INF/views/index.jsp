@@ -21,14 +21,14 @@
 <a href="member/logout"><li>로그아웃</li>
 </c:if>
 
-<a href="board/bInsert2"><li>다중업로드</li><a>
-<a href="board/bList2"><li>다중업로드리스트(list)</li><a>
-<br>
 <a href="board/bList"><li>공지사항리스트(list)</li><a>
 <a href="mInsert"><li>회원가입</li><a>
 <a href="boardBno"><li>글번호</li><a>
 <a href="bInsert"><li>글쓰기(Insert)</li><a>
 <a href="bView"><li>공지사항보기(view)</li><a>
+<br>
+<a href="board/bInsert2"><li>다중업로드</li><a>
+<a href="board/bList2"><li>다중업로드리스트(list)</li><a>
 </ul>
 
 </body>

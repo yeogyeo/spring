@@ -8,11 +8,11 @@
 	<head>
 	    <meta charset="UTF-8">
 	    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	    <title>doBUpdate</title>
+	    <title>doBReply</title>
 	</head>
 	<body>
 	   <script>
-	    	 alert("게시글이 수정 되었습니다.");
+	    	 alert("답변달기가 저장되었습니다.");
 	    	 location.href="bList";
 	   </script>
 	</body>
