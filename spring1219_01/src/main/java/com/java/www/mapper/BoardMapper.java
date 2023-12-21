@@ -11,7 +11,12 @@ public interface BoardMapper {
 	public int bListCount();
 
 	//게시글 전체 가져오기
-	public ArrayList<BoardDto> selectAll();
+	public ArrayList<BoardDto> selectAll(int startRow, int endRow, String category, String searchWord);
+	public ArrayList<BoardDto> selectSearch(int startRow, int endRow, String category, String searchWord);
+	//게시글 총개수, 게시글 검색개수
+	public int selectCountAll(String category, String searchWord);
+	
+	public int selectSearchCount(String category, String searchWord);
 
 	//게시글 1개 가져오기 현재글
 	public BoardDto selectOne(int bno);
@@ -35,6 +40,12 @@ public interface BoardMapper {
 	//다른게시글 bstep 1 증가
 	public void bstepUp(BoardDto bdto);
 	public int doBReply(BoardDto bdto);
+
+	
+
+	
+
+	
 
 	
 	

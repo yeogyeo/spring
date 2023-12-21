@@ -8,7 +8,9 @@ import com.java.www.dto.BoardDto;
 public interface BService {
 
 	//게시글 전체 가져오기
-	ArrayList<BoardDto> selectAll();
+	Map<String, Object> selectAll(int page, String category, String searchWord);
+	//게시글 검색
+	Map<String, Object> selectSearch(int page, String category, String searchWord);
 
 	//게시글 1개 가져오기
 	Map<String, Object> selectOne(int bno);
@@ -24,5 +26,7 @@ public interface BService {
 
 	//답변달기 저장
 	void doBReply(BoardDto bdto);
+
+	
 
 }

@@ -50,6 +50,10 @@ form > div {
   border: 1px solid #666666;
 }
 
+.boardcount{position: absolute; right:2%; margin-top: 10px;
+font-size: 20px; font-weight: 700;
+}
+
 input {
   position: relative;
   top: 4px;
@@ -77,6 +81,8 @@ button {
   color: white;
   border: none;
 }
+
+
 
 table {
   width: 96%;
@@ -117,9 +123,8 @@ td {
   border-right: hidden;
 }
 
-.page-num {
-  margin-top: 15px;
-}
+.page-num {margin-top: 15px;}
+.page-num a {text-decoration: none;}
 
 .page-num li {
   width: 36px;
@@ -129,21 +134,23 @@ td {
 }
 
 .first {
-  background: url(https://www.midashotel.co.kr/Midas_common/images/homepage/board/paging_first.png) no-repeat;
+  background: url(/images/paging_first.png) no-repeat;
 }
 
 .prev {
-  background: url(https://www.midashotel.co.kr/Midas_common/images/homepage/board/paging_prev.png) no-repeat;
+  background: url(/images/paging_prev.png) no-repeat;
 }
 
 .num {
   position: relative;
   top: -15px;
   height: 33px !important;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-left: 2px;
+  margin-right: 2px;
   border: 1px #989898 solid;
 }
+.on{background: #000814; color: white; font-weight: 700;
+border:1px solid #000814;}
 
 .num > div {
   position: relative;
@@ -151,11 +158,11 @@ td {
 }
 
 .next {
-  background: url(https://www.midashotel.co.kr/Midas_common/images/homepage/board/paging_next.png) no-repeat;
+  background: url(/images/paging_next.png) no-repeat;
 }
 
 .last {
-  background: url(https://www.midashotel.co.kr/Midas_common/images/homepage/board/paging_last.png) no-repeat;
+  background: url(/images/paging_last.png) no-repeat;
 }
 
 .write {

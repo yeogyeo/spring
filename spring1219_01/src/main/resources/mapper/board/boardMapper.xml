@@ -5,12 +5,36 @@
 <mapper namespace="com.java.www.mapper.BoardMapper">
    <!-- 게시글전체 가져오기 -->
    <select id="selectAll" resultType="com.java.www.dto.BoardDto">
-       <![CDATA[
+       
        select * from ( select rownum rnum, a.* from
-       ( select * from board order by bgroup desc,bstep asc ) a )
-       where rnum>=1 and rnum<=20
-       ]]>
+       ( select * from board 
+       
+       <if test="category == 'btitle' or category == 'bcontent' ">
+         where ${category} like '%'||#{searchWord}||'%'
+       </if>
+
+       <if test="category == 'all' ">
+         where btitle like '%'||#{searchWord}||'%' or  bcontent like '%'||#{searchWord}||'%'
+       </if>
+       
+       order by bgroup desc,bstep asc ) a )
+       where rnum between #{startRow} and #{endRow}
+      
    </select>
+   
+   
+   <!-- 게시글 총개수 null, all, btitle, bcontent -->
+   <select id="selectCountAll" resultType="int">
+     select count(*) from board
+     
+     <if test="category == 'btitle' or category == 'bcontent' ">
+         where ${category} like '%'||#{searchWord}||'%'
+     </if>
+     <if test="category == 'all' ">
+         where btitle like '%'||#{searchWord}||'%' or  bcontent like '%'||#{searchWord}||'%'
+     </if>
+   </select>
+   
    <!-- 게시글1개 가져오기 : 현재글 -->
    <select id="selectOne" resultType="com.java.www.dto.BoardDto">
        select * from board where bno=#{bno}
