@@ -1,7 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
 <title> JARDIN SHOP </title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="description" content="JARDIN SHOP" />
@@ -206,7 +212,44 @@ $(document).ready(function() {
 				</ul>			
 			</div><script type="text/javascript">initSubmenu(3,0);</script>
 
+            
+            
+			<script>
+			 $(function(){
+				$("#idBtn").click(function(){
+					alert("아이디 찾기 시작")
+					let name = $("#idName").val();
+					let email = $("#idEmail").val();
+					
+					$.ajax({
+						url:"/member/idsearch",
+						type:"post",
+						data{"name":name, "email":email},
+						dataType:"text",
+						success:function(data){
+							console.log(date);
+							alert("아이디를 찾았습니다.")
+							if(date=="fail"){
+								alert("아이디가 존재하지 않습니다. 회원가입을 해주세요.");
+							}else{
+								alert("아이디를 찾았습니다.");
+								//아이디 확인페이지 이동
+								location.href="/member/id?id="+data;
+							}
+						},
+						error:function(){
+							alert("입력하신 내용이 없거나 이름 또는 이메일이 틀렸습니다.")
+							
+						}
+					});//ajax
+					
+				});//idBtn
+			 });
 
+            </script>
+
+
+            
 			<!-- contents -->
 			<div id="contents">
 				<div id="member">
@@ -215,13 +258,46 @@ $(document).ready(function() {
 					<div class="informbox">
 						<div class="inform">
 							<ul>
-								<li><input type="text" class="nameType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='nameType'}else {this.className='mfocusnot'}" style="ime-mode:inactive;" /></li>
-								<li><input type="password" class="emailType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='emailType'}else {this.className='mfocusnot'}" style="ime-mode:inactive;" /></li>
+								<li><input type="text" id="idName" class="nameType" name="name" id="name" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='nameType'}else {this.className='mfocusnot'}" style="ime-mode:inactive;" /></li>
+								<li><input type="text" id="idEmail" class="emailType" name="email" id="email" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='emailType'}else {this.className='mfocusnot'}" style="ime-mode:inactive;" /></li>
 							</ul>
 
-							<div class="btn"><a href="#" class="gbtn">아이디 찾기</a></div>
+							<div class="btn"><a id="idBtn" class="gbtn c_pointer">아이디 찾기</a></div>
 						</div>
 					</div>
+					</form>
+					
+					
+					<script>
+					  $(function(){
+						 $("#pwBtn").click(function(){
+							alert("비밀번호 찾기를 시작합니다."); 
+							let id = $("#id").val();
+							let email = $("#email2").val();
+							//alert("id : "+id);
+							//alert("email : "+email);
+							
+							//ajax전송
+							$.ajax({
+								url:"/member/pwsearch",
+								data:{"id":id,"email":email},
+								type:"post",
+								dataType:"text",
+								success:function(data){
+									if(data=="success"){alert("메일이 발송되었습니다.");}
+									else{alert("아이디 또는 이메일주소가 틀립니다. 다시 입력하세요.");}//else
+									console.log(data);
+									
+								},
+								error:function(){
+									alert("실패")
+								}
+								
+							})//ajax
+							
+						 });//pwBtn 
+					  });//jquery
+					</script>
 
 
 
@@ -229,11 +305,11 @@ $(document).ready(function() {
 					<div class="informbox">
 						<div class="inform">
 							<ul>
-								<li><input type="text" class="loginType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='loginType'}else {this.className='mfocusnot'}" /></li>
-								<li><input type="text" class="emailType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='emailType'}else {this.className='mfocusnot'}" /></li>
+								<li><input type="text" id="id" class="loginType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='loginType'}else {this.className='mfocusnot'}" /></li>
+								<li><input type="text" id="email2" class="emailType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='emailType'}else {this.className='mfocusnot'}" /></li>
 							</ul>
 
-							<div class="btn"><a href="#" class="gbtn">비밀번호 찾기</a></div>
+							<div class="btn"><a id="pwBtn" class="gbtn c_pointer">비밀번호 찾기</a></div>
 						</div>
 					</div>
 

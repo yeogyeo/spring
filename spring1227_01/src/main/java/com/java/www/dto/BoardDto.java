@@ -20,7 +20,7 @@ public class BoardDto {
 	private String id;
 	private int bgroup;
 	private int bstep;
-	private int bindendt;
+	private int bindent;
 	private int bhit;
 	private String bfile;
 }

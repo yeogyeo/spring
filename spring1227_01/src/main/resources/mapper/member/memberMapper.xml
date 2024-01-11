@@ -2,11 +2,35 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--MemberMapper.java Interface 연결 -->    
+<!--MemberMapper.java  연결 -->    
 <mapper namespace="com.java.www.mapper.MemberMapper">
 	
-	<select id="login" resultType="com.java.www.dto.MemberDto">
-		select * from member where id=#{id} and pw=#{pw}
+	<select id="login" resultType="com.java.www.dto.Member2Dto">
+		select * from member2 where id=#{id} and pw=#{pw}
 	</select>
+	
+	<insert id="minsert">
+	  insert into member (id,pw,name,phone,mdate)
+	  values (#{id},#{pw},#{name},#{phone},sysdate)
+	</insert>
+	<!-- 아이디찾기 - 이름 이메일검색 -->  
+	<select id="idsearch" resultType="com.java.www.dto.Member2Dto">
+	 select * from member2 where name=#{name} and email=#{email}
+	</select>
+	
+<!-- 비번찾기 - 아이디 이메일검색 -->    
+	<select id="pwsearch" resultType="com.java.www.dto.Member2Dto">
+	 select * from member2 where id=#{id} and email=#{email}
+	</select>
+	
+	<update id="update_pw">
+	  update member2 set pw=#{pwcode} where id=#{id}
+	</update>
+	
+	<select id="idCheck" resultType="com.java.www.dto.Member2Dto">
+	  select * from member2 where id=#{id}
+	</select>
+	
+	
  	
 </mapper>

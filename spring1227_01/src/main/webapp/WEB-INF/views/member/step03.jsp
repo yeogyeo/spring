@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -252,17 +257,119 @@ $(document).ready(function() {
 							<col width="22%" class="tw30" />
 							<col width="*" />
 							</colgroup>
+							
+							<script>
+							  $(function(){
+								  $(".sbtnMini").click(()=>{
+									 // alert("정규표현식 확인");
+									 //[]안에 내가 원하는 문자를 넣으면 있는지 확인
+									 //{}는 자리수를 의미함.
+									  let idpattern = /^[a-zA-Z0-9_]{3,10}$/;
+									  let id2pattern = /^[a-z]{1}[a-zA-Z0-9_]{2,9}$/; //3-10자리
+									  let pwpattern =/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+]).{3,10}$/;
+									  let tel2pattern = /^[0-9]{3,4}$/;
+									  let tel3pattern = /^[0-9]{4}$/;
+									  let namepattern = /^[ㄱ-ㅎ가힣]$/; //한글만 가능
+									  
+									  
+									  let id = $("#id").val();
+									  let pw = $("#pw").val();
+									  let chk = $("input[type=checkbox]:checked").length;
+										 
+									  if(chk==0){
+											 alert("하나 이상 체크하셔야 다음단계로 진행가능");
+											 return false;
+										 }
+										 
+									 if(!idpattern.test(id)){
+										 alert("3-10자리까지 영문, 숫자만 사용이 가능합니다.");
+										 return false;
+									 }
+									 
+									 if(!pwpattern.test(pw)){
+										 alert("입력은 영문자, 숫자, 특수문자 1개 이상 입력하셔야 합니다.");
+										 return false;
+									 }
+									 
+									
+									 $("#phone").val($("#phone1").val()+"-"+$("#phone2").val()+"-"+$("#phone3").val());
+									 
+									 $("#email").val($("#email1").val()+"@"+$("#email2").val());
+									 
+									 //submit
+									 frm.submit();
+									  
+								  });//sbtnMini
+								
+								  
+								  $(".nbtnMini").click(()=>{
+									  let id = $("#id").val();
+									  
+									  $.ajax({
+										  url:"/member/idCheck",
+										  type:"post",
+										  data:{"id":id},
+										  dataType:"text",
+										  success:function(data){
+											  alert("성공");
+									          console.log(data);
+									          if(data=="사용가능"){
+									        	  alert("아이디 사용가능");
+									          }else{
+									        	  alert("아이디 사용불가");
+									          }
+										  },
+										  error:function(){
+											  alert("실패");
+										  }
+										  
+										  
+									  });//jax
+									  
+									  
+								  });//nbtnMini
+								  
+								  $("#pw2").keyup(function(){
+									// alert("test"); 
+									let pw = $("#pw").val();
+									let pw2 = $("#pw2").val();
+									if(pw==pw2){
+										//alert("일치합니다.");
+										$("#pwtxt").attr("class","black");
+										$("#pwtxt").text("*비밀번호가 일치합니다.");
+										
+									}else{
+										//alert("일치하지 않습니다.");
+										$("#pwtxt").attr("class","orange");
+										$("#pwtxt").text("*비밀번호가 일치하지 않습니다.");
+									}
+									
+								  });
+								  
+								  
+							  });//jq
+							  
+							 
+							  
+							</script>
+							
+							
 							<tbody>
+							<form action="/member/step04" name="frm" method="post">
+							
+							
 								<tr>
 									<th scope="row"><span>이름 *</span></th>
-									<td>김슬기</td>
+									<td>
+									  <li class="r10"><input type="text" id="name" name="name" class="w134" /></li>
+									</td>
 								</tr>
 								<tr>
 									<th scope="row"><span>아이디 *</span></th>
 									<td>
 										<ul class="pta">
-											<li class="r10"><input type="text" class="w134" /></li>
-											<li><a href="#" class="nbtnMini">중복확인</a></li>
+											<li class="r10"><input type="text" id="id" name="id" class="w134" /></li>
+											<li><a class="nbtnMini c_pointer">중복확인</a></li>
 											<li class="pt5"><span class="mvalign">첫 글자는 영문으로 4~16자 까지 가능, 영문, 숫자와 특수기호(_)만 사용 가능</span></li>
 										</ul>
 									</td>
@@ -271,7 +378,7 @@ $(document).ready(function() {
 									<th scope="row"><span>비밀번호 *</span></th>
 									<td>
 										<ul class="pta">
-											<li class="r10"><input type="password" class="w134" /></li>
+											<li class="r10"><input type="password" id="pw" name="pw" class="w134" /></li>
 											<li><span class="mvalign">※ 영문 / 숫자 혼용으로 4~20자 까지 가능.</span></li>
 										</ul>
 									</td>
@@ -280,10 +387,42 @@ $(document).ready(function() {
 									<th scope="row"><span>비밀번호 확인 *</span></th>
 									<td>
 										<ul class="pta">
-											<li class="r10"><input type="password" class="w134" /></li>
+											<li class="r10"><input type="password" id="pw2" name="pw2" class="w134" /></li>
 											<li>
-												<span class="mvalign black">* 비밀번호가 일치입니다.</span>
-												<span class="mvalign orange">* 비밀번호가 일치하지 않습니다.</span>
+												<span id="pwtxt" class="mvalign black"></span>
+												<!-- <span id="pwtxt" class="mvalign orange">* 비밀번호가 일치하지 않습니다.</span> -->
+											</li>
+										</ul>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row"><span>휴대폰 *</span></th>
+									<td>
+									    <input type="hidden" name="phone" id="phone">
+										<ul class="pta">
+											<li>
+												<select id="phone1" name="phone1">
+													<option value="010" selected="selected">010</option>
+													<option value="011">011</option>
+													<option value="016">016</option>
+													<option value="017">017</option>
+													<option value="018">018</option>    
+													<option value="019">019</option>    
+												</select>
+											</li>
+											<li>&nbsp;<span class="valign">-</span>&nbsp;</li>
+											<li><input type="text" id="phone2" name="phone2" class="w74" maxlength="4" /> <span class="valign">-</span>&nbsp;</li>
+											<li class="r10"><input type="text" id="phone3" name="phone3" class="w74" maxlength="4" /></li>
+											<li class="cb pt5"><span class="mvalign">※ SMS 서비스를 받아보시겠습니까?</span></li>
+											<li class="pt5">
+												<ul class="baseQues">
+													<li>
+														<input type="radio" name="sms" id="sms_yes" class="radio_t" checked="checked"/><label for="sms_yes">예</label>
+													</li>
+													<li>
+														<input type="radio" name="sms" id="sms_no" class="radio_t"/><label for="sms_no">아니오</label>
+													</li>
+												</ul>
 											</li>
 										</ul>
 									</td>
@@ -292,9 +431,10 @@ $(document).ready(function() {
 									<th scope="row"><span>이메일</span></th>
 									<td>
 										<ul class="pta">
-											<li><input type="text" class="w134" /></li>
+										<input type="hidden" name="email" id="email">
+											<li><input type="text" name="email1" id="email1" class="w134" /></li>
 											<li><span class="valign">&nbsp;@&nbsp;</span></li>
-											<li class="r10"><input type="text" class="w134" /></li>
+											<li class="r10"><input type="text" name="email2" id="email2" class="w134" /></li>
 											<li>
 												<select id="emailList">
 													<option value="#" selected="selected">직접입력</option>
@@ -319,18 +459,50 @@ $(document).ready(function() {
 									</td>
 								</tr>
 								<tr>
-									<th scope="row"><span>이메일 수신여부 *</span></th>
+									<th scope="row"><span>성별</span></th>
 									<td>
-										<p>쟈뎅에서 진행되는 이벤트와 쇼핑에 대한 정보를 이메일로 받아보시겠습니까?</p>
-										<ul class="question">
+										<ul class="pta">
 											<li>
-												<input type="radio" name="receive" id="receive_yes" class="radio_t" checked="checked"/><label for="receive_yes">예</label>
+												<ul class="baseQues">
+													<li>
+														<input type="radio" name="gender" id="Male" value="Male" class="radio_t"/><label for="partner">남성</label>
+													</li>
+													<li>
+														<input type="radio" name="gender" id="Fmale" value="Fmale class="radio_t" checked="checked"/><label for="general">여성</label>
+													</li>
+												</ul>
 											</li>
-											<li>
-												<input type="radio" name="receive" id="receive_no" class="radio_t"/><label for="receive_no">아니오</label>
-											</li>
+
+											
 										</ul>
-										<p class="gray">* 거래관련 정보는 고객님의 거래안전을 위하여 이메일 수신거부와 관계없이 발송됩니다.</p>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row"><span>취미</span></th>
+									<td>
+										<ul class="pta">
+											<li>
+												<ul class="baseQues">
+													<li>
+														<input type="checkbox" name="hobby" id="game" value="game" class="radio_t"/><label for="game">게임</label>
+													</li>
+													<li>
+														<input type="checkbox" name="hobby" id="golf" value="golf" class="radio_t"/><label for="golf">골프</label>
+													</li>
+													<li>
+														<input type="checkbox" name="hobby" id="book" value="book" class="radio_t"/><label for="book">독서</label>
+													</li>
+													<li>
+														<input type="checkbox" name="hobby" id="cook" value="cook" class="radio_t"/><label for="cook">요리</label>
+													</li>
+													<li>
+														<input type="checkbox" name="hobby" id="run" value="run" class="radio_t"/><label for="run">조깅</label>
+													</li>
+												</ul>
+											</li>
+
+											
+										</ul>
 									</td>
 								</tr>
 								<tr>
@@ -338,84 +510,24 @@ $(document).ready(function() {
 									<td>
 										<ul class="pta">
 											<li>
-												<input type="text" class="w134" />&nbsp;
+												<input type="text" id="zipcode" name="zipcode" class="w134" />&nbsp;
 											</li>
-											<li><a href="zip.html" class="addressBtn"><span>우편번호 찾기</span></a></li>
-											<li class="pt5"><input type="text" class="addressType" /></li>
+											<li><a class="addressBtn c_pointer"><span>우편번호 찾기</span></a></li>
+											<li class="pt5"><input type="text" id="address" name="address" class="addressType" /></li>
 											<li class="cb">
 												<span class="mvalign">※ 상품 배송 시 받으실 주소입니다. 주소를 정확히 적어 주세요.</span>
 											</li>
 										</ul>
 									</td>
 								</tr>
-								<tr>
-									<th scope="row"><span>휴대폰 *</span></th>
-									<td>
-										<ul class="pta">
-											<li>
-												<select>
-													<option value="010" selected="selected">010</option>
-													<option value="011">011</option>
-													<option value="016">016</option>
-													<option value="017">017</option>
-													<option value="018">018</option>    
-													<option value="019">019</option>    
-												</select>
-											</li>
-											<li>&nbsp;<span class="valign">-</span>&nbsp;</li>
-											<li><input type="text" class="w74" maxlength="4" /> <span class="valign">-</span>&nbsp;</li>
-											<li class="r10"><input type="text" class="w74" maxlength="4" /></li>
-											<li class="cb pt5"><span class="mvalign">※ SMS 서비스를 받아보시겠습니까?</span></li>
-											<li class="pt5">
-												<ul class="baseQues">
-													<li>
-														<input type="radio" name="sms" id="sms_yes" class="radio_t" checked="checked"/><label for="sms_yes">예</label>
-													</li>
-													<li>
-														<input type="radio" name="sms" id="sms_no" class="radio_t"/><label for="sms_no">아니오</label>
-													</li>
-												</ul>
-											</li>
-										</ul>
-									</td>
-								</tr>
-								<tr>
-									<th scope="row"><span>유선전화</span></th>
-									<td>
-										<ul class="pta">
-											<li>
-												<select>
-													<option value="02" selected="selected">02</option>
-													<option value="031">031</option>
-													<option value="032">032</option>
-													<option value="033">033</option>
-													<option value="041">041</option>
-													<option value="042">042</option>
-													<option value="043">043</option>
-													<option value="051">051</option>
-													<option value="052">052</option>
-													<option value="053">053</option>
-													<option value="054">054</option>
-													<option value="055">055</option>
-													<option value="061">061</option>
-													<option value="062">062</option>
-													<option value="063">063</option>
-													<option value="064">064</option>
-													<option value="070">070</option>
-												</select>
-											</li>
-											<li>&nbsp;<span class="valign">-</span>&nbsp;</li>
-											<li><input type="text" class="w74" maxlength="4" /> <span class="valign">-</span>&nbsp;</li>
-											<li><input type="text" class="w74" maxlength="4" /></li>
-										</ul>
-									</td>
-								</tr>
+								
+								
 								<tr>
 									<th scope="row"><span>생년월일</span></th>
 									<td>
 										<ul class="pta">
 											<li>
-												<select>
+												<select id="birth1" name"birth1">
 													<option value='' selected="selected">선택하세요</option>
 													<script type="text/javascript">
 													//<![CDATA[
@@ -428,7 +540,7 @@ $(document).ready(function() {
 											</li>
 											<li>&nbsp;<span class="valign">년</span>&nbsp;&nbsp;&nbsp;</li>
 											<li>
-												<select>
+												<select id="birth2" name"birth2">
 													<option value='' selected="selected">선택하세요</option>
 													<script type="text/javascript">
 													//<![CDATA[
@@ -445,7 +557,7 @@ $(document).ready(function() {
 											</li>
 											<li>&nbsp;<span class="valign">월</span>&nbsp;&nbsp;&nbsp;</li>
 											<li>
-												<select>
+												<select id="birth3" name"birth3">
 													<option value='' selected="selected">선택하세요</option>
 													<script type="text/javascript">
 													//<![CDATA[
@@ -498,6 +610,7 @@ $(document).ready(function() {
 										</ul>
 									</td>
 								</tr>
+							</form>
 							</tbody>
 							</table>
 						</div>
@@ -510,8 +623,8 @@ $(document).ready(function() {
 					<div class="btnArea">
 						<div class="bCenter">
 							<ul>
-								<li><a href="#" class="nbtnbig">취소하기</a></li>
-								<li><a href="#" class="sbtnMini">가입하기</a></li>
+								<li><a class="nbtnbig c_pointer">취소하기</a></li>
+								<li><a class="sbtnMini c_pointer">가입하기</a></li>
 							</ul>
 						</div>
 					</div>
